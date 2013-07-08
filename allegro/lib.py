@@ -1,9 +1,15 @@
 # -*- coding: UTF-8 -*-
 import mechanize,webbrowser
-from urllib import urlopen
+from urllib2 import urlopen,URLError
 from bs4 import BeautifulSoup
 
 class NoItemException(Exception):
+    pass
+
+class PriceConversionException(Exception):
+    pass
+
+class NoConnectionError(Exception):
     pass
 
 def open_in_browser(link):
@@ -18,7 +24,10 @@ def fill_forms(item_name):
     output: html site - str'''
 
     br = mechanize.Browser()
-    br.open('http://allegro.pl/')
+    try:
+        br.open('http://allegro.pl/')
+    except URLError:
+        raise NoConnectionError('Connection error, check internet connection..')
 
     br.select_form(nr = 0)
     br['string'] = 'laptop'
@@ -39,13 +48,12 @@ def get_linklist(html):
     output: list of subject links'''
     link_list = []
     soup = BeautifulSoup(html)
-    # import ipdb; ipdb.set_trace()
     a = soup.findAll('h2')
     for i in a:
         h = BeautifulSoup(str(i))
         a = h.find('a')
         if a != None:
-            link_list.append('http://allegro.pl/'+ a['href'])
+            link_list.append('http://allegro.pl'+ a['href'])
     return link_list[1:]
 
 
@@ -60,12 +68,17 @@ def get_item_price(site):
 
 def convert_price_to_float(str_price = ''):
     '''
-    input: price - str
+    input: price - unicode
     output: price - float'''
+    try:
+        str(str_price)
+        price = str_price.replace(' ','')
+        price = price.replace(',','.')
+        return float(price)
+    except (AttributeError, ValueError):
+        raise PriceConversionException("Can't convert price..")
 
-    price = str_price.replace(' ','')
-    price = price.replace(',','.')
-    return float(price)
+
 
 def allegro_api(item_name = 'laptop', browser_mode = False):
     '''function that does the job '''

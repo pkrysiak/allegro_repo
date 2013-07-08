@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 html_link = 'http://allegro.pl/laptop-dell-15r-i7-4x2-1ghz-6gb-750gb-win8-antyw-i3350097130.html'
-html_price = '3 229,00 zł'
+html_price = '3 229,00'
 html = '''\
 
 <!DOCTYPE html>
