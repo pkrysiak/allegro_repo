@@ -2,7 +2,6 @@
 import mechanize,webbrowser
 from urllib import urlopen
 from bs4 import BeautifulSoup
-from html import *
 
 class NoItemException(Exception):
     pass
@@ -18,8 +17,7 @@ def fill_forms(item_name):
     input: item name - str
     output: html site - str'''
 
-    br = mechanize.Browser()
-    br.open('http://allegro.pl/')
+    br = mechanize.Browser().open('http://allegro.pl/')
 
     br.select_form(nr = 0)
     br['string'] = 'laptop'
@@ -38,7 +36,6 @@ def get_linklist(html):
     '''
     input: html - str
     output: list of subject links'''
-
     link_list = []
     soup = BeautifulSoup(html)
     a = soup.findAll('h2')
