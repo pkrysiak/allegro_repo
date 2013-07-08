@@ -7,7 +7,7 @@ setup(name = 'Allegro app',
       author = 'Paweł Krysiak',
       author_email = 'pawel.krysiak@stxnext.pl',
       packages = ['allegro','tests'],
-      install_requires = ['mechanize', 'beautifulsoup4'], # fill it
+      install_requires = ['mechanize', 'beautifulsoup4'],
       test_suite='tests',
       entry_points = {'console_scripts': ['main = allegro.scripts:main']}
 )
