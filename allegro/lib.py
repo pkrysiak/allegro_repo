@@ -2,6 +2,7 @@
 import mechanize,webbrowser
 from urllib import urlopen
 from bs4 import BeautifulSoup
+from html import *
 
 class NoItemException(Exception):
     pass
@@ -49,24 +50,21 @@ def get_linklist(html):
     return link_list[1:]
 
 
-def get_link_price(url):
+def get_item_price(site):
     '''
-    input: url- string
+    input: site - string
     output: price - string'''
 
-    site = urlopen(url).read()
-    soup = BeautifulSoup(site)
-    # print soup.prettify()
-    a = soup.findAll('div', attrs={'class':'left'})
-    return a[0].strong.contents[0].string
+    b = BeautifulSoup(site)
+    c =  b.find('span',attrs={'class':'buy-now dist'})
+    return c.contents[2].strip()
 
 def convert_price_to_float(str_price = ''):
     '''
     input: price - str
     output: price - float'''
 
-    price = str_price[:-4]
-    price = price.replace(' ','')
+    price = str_price.replace(' ','')
     price = price.replace(',','.')
     return float(price)
 
@@ -75,7 +73,7 @@ def allegro_api(item_name = 'laptop', browser_mode = False):
 
     site = fill_forms(item_name)
     links = get_linklist(site)
-    price = convert_price_to_float( get_link_price(links[0]) )
+    price = convert_price_to_float( get_item_price(site) )
 
     if browser_mode:
         open_in_browser(links[0])

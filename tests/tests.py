@@ -4,8 +4,5 @@ from allegro import lib
 
 class AllegroTests(unittest.Testcase):
 
-    def setUp(self):
-        pass
-
-    def tearDown(self):
+    def test_succesfull(self):
         pass
