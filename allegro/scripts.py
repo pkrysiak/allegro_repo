@@ -12,7 +12,7 @@ def parse_args():
     return vars(parser.parse_args()) #make dict out of Namespace object
 
 def main():
-    '''function that does the job '''
+    '''function that claims it does the job '''
     item = parse_args()['item_name']
     try:
         url, price = lib.allegro_api(item)
@@ -22,4 +22,4 @@ def main():
         sys.exit('Wrong item name specified, can\'t get results')
 
 
-# main()
+main()
