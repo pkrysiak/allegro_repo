@@ -17,7 +17,8 @@ def fill_forms(item_name):
     input: item name - str
     output: html site - str'''
 
-    br = mechanize.Browser().open('http://allegro.pl/')
+    br = mechanize.Browser()
+    br.open('http://allegro.pl/')
 
     br.select_form(nr = 0)
     br['string'] = 'laptop'
@@ -38,6 +39,7 @@ def get_linklist(html):
     output: list of subject links'''
     link_list = []
     soup = BeautifulSoup(html)
+    # import ipdb; ipdb.set_trace()
     a = soup.findAll('h2')
     for i in a:
         h = BeautifulSoup(str(i))
@@ -69,6 +71,7 @@ def allegro_api(item_name = 'laptop', browser_mode = False):
     '''function that does the job '''
 
     site = fill_forms(item_name)
+
     links = get_linklist(site)
     price = convert_price_to_float( get_item_price(site) )
 
