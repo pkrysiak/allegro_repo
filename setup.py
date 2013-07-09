@@ -2,7 +2,7 @@
 
 from setuptools import setup
 
-setup(name = 'Allegro app',
+setup(name = 'Allegro',
       version = '1.0',
       author = 'Paweł Krysiak',
       author_email = 'pawel.krysiak@stxnext.pl',
