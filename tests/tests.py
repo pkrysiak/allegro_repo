@@ -1,9 +1,10 @@
 # -*- coding:UTF-8 -*-
 import unittest
-from mock import patch,MagicMock
+from mock import patch,Mock
 from allegro import lib
 from html import *
 from urllib2 import URLError
+
 class AllegroTests(unittest.TestCase):
 
     def setUp(self):
@@ -23,6 +24,12 @@ class AllegroTests(unittest.TestCase):
         Browser().response().read.return_value = html
         _ , price = lib.allegro_api(self.search_phrase)
         self.assertEqual(price, lib.convert_price_to_float(html_price))
+
+    @patch('allegro.lib.mechanize.Browser')
+    def test_no_connection_error(self, Browser):
+        Browser().open.side_effect = URLError('NoConnection..')
+        self.assertRaises(lib.NoConnectionError, lib.allegro_api, self.search_phrase)
+
 
     def test_convert_price_to_float(self):
         l = [1,' ',',','','acsd,)']

@@ -12,6 +12,7 @@ class PriceConversionException(Exception):
 class NoConnectionError(Exception):
     pass
 
+
 def open_in_browser(link):
     '''
     input: link - str
@@ -27,7 +28,7 @@ def fill_forms(item_name):
     try:
         br.open('http://allegro.pl/')
     except URLError:
-        raise NoConnectionError('Connection error, check internet connection..')
+        raise NoConnectionError
 
     br.select_form(nr = 0)
     br['string'] = 'laptop'
@@ -66,7 +67,7 @@ def get_item_price(site):
     c =  b.find('span',attrs={'class':'buy-now dist'})
     return c.contents[2].strip()
 
-def convert_price_to_float(str_price = ''):
+def convert_price_to_float(str_price):
     '''
     input: price - unicode
     output: price - float'''
