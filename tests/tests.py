@@ -36,9 +36,9 @@ class AllegroTests(unittest.TestCase):
         self.assertRaises(lib.NoItemException, lib.allegro_api, 'konstantynopolitańczykowianeczka')
 
     def test_convert_price_to_float_fail(self):
-        for not_price in [1,' ',',','','acsd,)']:
+        for not_price in [1, ' ', ',', '', 'acsd,)']:
             self.assertRaises(lib.PriceConversionException, lib._convert_price_to_float, not_price)
 
     def test_convert_price_to_float_success(self):
-        for input_price, result_price in [ ('0', 0), ('29,99', 29.99), ('2 129,84', 2129.84)]:
+        for input_price, result_price in [('0', 0), ('29,99', 29.99), ('2 129,84', 2129.84)]:
             self.assertEqual(result_price, lib._convert_price_to_float(input_price))

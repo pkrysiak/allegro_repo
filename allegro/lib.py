@@ -12,7 +12,7 @@ class PriceConversionException(Exception):
 class NoConnectionError(Exception):
     pass
 
-def fill_forms(item_name):
+def _fill_forms(item_name):
     '''
     input: item name - str
     output: html site - str'''
@@ -52,7 +52,7 @@ def _convert_price_to_float(str_price):
 def allegro_api(item_name):
     '''function that does the job '''
 
-    site = fill_forms(item_name)
+    site = _fill_forms(item_name)
     soup = BeautifulSoup(site)
     item = soup.find('article', attrs={'class': 'offer'})
     if item is None:
