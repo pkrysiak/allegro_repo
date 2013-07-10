@@ -26,8 +26,10 @@ def _fill_forms(item_name):
     br.select_form(nr = 0)
     br['string'] = item_name
     br.submit()
-
-    br.select_form(nr = 1)
+    try:
+        br.select_form(nr = 1)
+    except mechanize._mechanize.FormNotFoundError:
+        raise NoItemException('No items found for this search phrase..')
     br['offerTypeBuyNow'] = ['1']
     br['standard_allegro'] = ['1']
     br['startingTime'] = ['']
