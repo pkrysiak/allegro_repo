@@ -17,9 +17,5 @@ def main():
     try:
         url, price = lib.allegro_api(item)
         print ''.join(['Link do przedmiotu: ', url, ' Cena: ', str(price)])
-        pass
     except lib.NoItemException:
         sys.exit('Wrong item name specified, can\'t get results')
-
-
-main()

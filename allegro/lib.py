@@ -12,13 +12,6 @@ class PriceConversionException(Exception):
 class NoConnectionError(Exception):
     pass
 
-
-def open_in_browser(link):
-    '''
-    input: link - str
-    output: None'''
-    webbrowser.open_new_tab(link)
-
 def fill_forms(item_name):
     '''
     input: item name - str
@@ -31,7 +24,7 @@ def fill_forms(item_name):
         raise NoConnectionError
 
     br.select_form(nr = 0)
-    br['string'] = 'laptop'
+    br['string'] = item_name
     br.submit()
 
     br.select_form(nr = 1)
@@ -43,31 +36,7 @@ def fill_forms(item_name):
     br.submit()
     return br.response().read()
 
-def get_linklist(html):
-    '''
-    input: html - str
-    output: list of subject links'''
-    link_list = []
-    soup = BeautifulSoup(html)
-    a = soup.findAll('h2')
-    for i in a:
-        h = BeautifulSoup(str(i))
-        a = h.find('a')
-        if a != None:
-            link_list.append('http://allegro.pl'+ a['href'])
-    return link_list[1:]
-
-
-def get_item_price(site):
-    '''
-    input: site - string
-    output: price - string'''
-
-    b = BeautifulSoup(site)
-    c =  b.find('span',attrs={'class':'buy-now dist'})
-    return c.contents[2].strip()
-
-def convert_price_to_float(str_price):
+def _convert_price_to_float(str_price):
     '''
     input: price - unicode
     output: price - float'''
@@ -80,16 +49,15 @@ def convert_price_to_float(str_price):
         raise PriceConversionException("Can't convert price..")
 
 
-
-def allegro_api(item_name = 'laptop', browser_mode = False):
+def allegro_api(item_name):
     '''function that does the job '''
 
     site = fill_forms(item_name)
+    soup = BeautifulSoup(site)
+    item = soup.find('article', attrs={'class': 'offer'})
+    if item is None:
+        raise NoItemException('No items found for this search phrase..')
+    link = 'http://allegro.pl' + item.find('a')['href']
+    price = item.find('span', attrs={'class': 'buy-now dist'}).contents[2]
 
-    links = get_linklist(site)
-    price = convert_price_to_float( get_item_price(site) )
-
-    if browser_mode:
-        open_in_browser(links[0])
-
-    return links[0],price
+    return link, _convert_price_to_float(price)
