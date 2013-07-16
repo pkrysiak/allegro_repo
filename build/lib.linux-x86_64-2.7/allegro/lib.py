@@ -51,19 +51,15 @@ def _convert_price_to_float(str_price):
         raise PriceConversionException("Can't convert price..")
 
 
-def allegro_api(item_name, pic = False):
+def allegro_api(item_name):
     '''function that does the job '''
 
     site = _fill_forms(item_name)
     soup = BeautifulSoup(site)
     item = soup.find('article', attrs={'class': 'offer'})
-    pic_link = item.find('div', attrs={'class' : 'photo loading'})['data-img'].split(',')[-1][1:-3]
     if item is None:
         raise NoItemException('No items found for this search phrase..')
     link = 'http://allegro.pl' + item.find('a')['href']
     price = item.find('span', attrs={'class': 'buy-now dist'}).contents[2]
 
-    if pic:
-        return link, _convert_price_to_float(price), pic_link
-    else:
-        return link, _convert_price_to_float(price)
+    return link, _convert_price_to_float(price)
