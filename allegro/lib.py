@@ -57,9 +57,9 @@ def allegro_api(item_name, pic = False):
     site = _fill_forms(item_name)
     soup = BeautifulSoup(site)
     item = soup.find('article', attrs={'class': 'offer'})
-    pic_link = item.find('div', attrs={'class' : 'photo loading'})['data-img'].split(',')[-1][1:-3]
     if item is None:
         raise NoItemException('No items found for this search phrase..')
+    pic_link = item.find('div', attrs={'class' : 'photo loading'})['data-img'].split(',')[-1][1:-3]
     link = 'http://allegro.pl' + item.find('a')['href']
     price = item.find('span', attrs={'class': 'buy-now dist'}).contents[2]
 
